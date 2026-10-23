@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador FI</title>
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<div id="app">
+  <div id="menubar">
+    <span class="mb-item" data-m="menu">Menu</span>
+    <span class="mb-item" data-m="editar">Editar</span>
+    <span class="mb-item" data-m="favoritos">Favoritos</span>
+    <span class="mb-item" data-m="sistema">Sistema</span>
+    <span class="mb-item" data-m="ajuda">Ajuda</span>
+    <span class="mb-marca">Simulador FI · ambiente de estudo</span>
+  </div>
+  <div id="systoolbar">
+    <button class="stb" id="btnEnter" title="Enter"></button>
+    <div class="cmdwrap"><input id="cmd" list="histCmd" data-f4="tcode" autocomplete="off" spellcheck="false" placeholder="código da transação" title="Campo de comando: digite o código da transação (Ctrl+/ vem para cá)"></div>
+    <datalist id="histCmd"></datalist>
+    <span class="sep"></span>
+    <button class="stb" id="btnSave" title="Gravar (Ctrl+S)"></button>
+    <button class="stb" id="btnBack" title="Voltar (F3)"></button>
+    <button class="stb" id="btnExit" title="Encerrar (Shift+F3)"></button>
+    <button class="stb" id="btnCancel" title="Cancelar (Esc)"></button>
+    <span class="sep"></span>
+    <button class="stb" id="btnF8" title="Executar (F8)"></button>
+    <button class="btn-guia" id="btnGuia" title="Mostra ou esconde o guia do aluno"></button>
+  </div>
+  <div id="titlebar"><h1 id="titulo"></h1></div>
+  <div id="apptoolbar"></div>
+  <div id="main"><div id="tela"></div><aside id="guia"></aside></div>
+  <div id="statusbar"><div id="msg"></div><div id="sysinfo"></div></div>
+</div>
+<div id="popup-layer"></div>
+<script src="js/motor.js"></script>
+<script src="js/dados.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/guia.js"></script>
+<script src="js/telas.js"></script>
+<script src="js/app.js"></script>
+<script>
+  // ícones da barra de sistema
+  document.getElementById('btnEnter').innerHTML = icone('ok');
+  document.getElementById('btnSave').innerHTML = icone('gravar');
+  document.getElementById('btnBack').innerHTML = icone('voltar');
+  document.getElementById('btnExit').innerHTML = icone('sair');
+  document.getElementById('btnCancel').innerHTML = icone('cancelar');
+  document.getElementById('btnF8').innerHTML = icone('exec');
+  document.getElementById('btnGuia').innerHTML = icone('livro') + '<span>Guia do aluno</span>';
+</script>
+</body>
+</html>

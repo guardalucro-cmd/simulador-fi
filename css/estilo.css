@@ -1,0 +1,221 @@
+/* Simulador FI: visual inspirado no SAP GUI (tema claro), sem logotipos */
+:root{
+  --shell:#354a5f; --shell2:#2c3e50;
+  --bg:#eff1f3; --area:#f7f7f7; --panel:#ffffff; --line:#d9d9d9; --line2:#e8e8e8;
+  --fb:#89919a; --text:#32363a; --muted:#6a6d70;
+  --blue:#0a6ed1; --blue-d:#0854a0; --sel:#e5f0fa; --hover:#f3f8fd;
+  --ok:#107e3e; --err:#bb0000; --warn:#e9730c;
+  --tot:#fff3b8; --sub:#fffae0; --hdr:#f2f2f2;
+  --tutor:#0E7A55; --tutor-bg:#f4faf7; --tutor-line:#cfe6da;
+  --font:"72","72full",Arial,Helvetica,sans-serif;
+  --mono:"Courier New",Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--text);font:13px/1.35 var(--font);overflow:hidden}
+button{font-family:var(--font)}
+#app{display:flex;flex-direction:column;height:100vh;min-width:900px}
+
+/* Barra de menus */
+#menubar{background:var(--shell);color:#fff;display:flex;align-items:center;height:30px;padding:0 6px;gap:2px;flex:none}
+.mb-item{padding:5px 10px;cursor:pointer;border-radius:3px;font-size:13px;user-select:none}
+.mb-item:hover,.mb-item.ativo{background:rgba(255,255,255,.14)}
+.mb-marca{margin-left:auto;opacity:.7;font-size:12px;padding-right:6px}
+.dd{position:fixed;background:#fff;border:1px solid #b9c4cf;box-shadow:0 4px 14px rgba(0,0,0,.18);z-index:60;min-width:230px;padding:4px 0}
+.dd div{padding:6px 14px;cursor:pointer;white-space:nowrap}
+.dd div:hover{background:var(--sel)}
+.dd hr{border:0;border-top:1px solid var(--line2);margin:4px 0}
+
+/* Barra de sistema */
+#systoolbar{display:flex;align-items:center;gap:3px;height:38px;padding:0 8px;background:#fff;border-bottom:1px solid var(--line);flex:none}
+.stb{width:30px;height:28px;border:1px solid transparent;background:transparent;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.stb:hover{background:#eef3f8;border-color:#c5d3e0}
+.sep{width:1px;height:22px;background:var(--line);margin:0 6px}
+.cmdwrap{display:flex;align-items:center;border:1px solid var(--fb);height:26px;background:#fff}
+.cmdwrap:focus-within{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+#cmd{border:0;outline:0;width:200px;height:24px;padding:0 6px;font:13px var(--font);text-transform:uppercase;background:transparent}
+.btn-guia{margin-left:auto;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border:1px solid var(--tutor);background:#fff;color:var(--tutor);border-radius:14px;cursor:pointer;font-size:13px;font-weight:bold}
+.btn-guia.on{background:var(--tutor);color:#fff}
+
+/* Título e barra de aplicação */
+#titlebar{background:#fff;padding:10px 16px 8px;flex:none}
+#titulo{margin:0;font-size:18px;font-weight:normal;color:#32363a}
+#apptoolbar{background:#fff;min-height:34px;display:flex;align-items:center;gap:2px;padding:2px 10px 4px;border-bottom:1px solid var(--line);flex:none;flex-wrap:wrap}
+.atb{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 9px;border:1px solid transparent;background:transparent;font:13px var(--font);color:var(--blue-d);cursor:pointer;border-radius:3px}
+.atb:hover{background:#eef3f8;border-color:#c5d3e0}
+.atb small{color:var(--muted)}
+
+#main{flex:1;display:flex;min-height:0}
+#tela{flex:1;overflow:auto;padding:14px 16px 24px;background:var(--area);min-width:0}
+
+/* Barra de status */
+#statusbar{height:28px;background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:12.5px;flex:none;gap:12px}
+#msg{display:flex;align-items:center;gap:6px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+#msg span{overflow:hidden;text-overflow:ellipsis}
+#msg.msg-E{color:var(--err)} #msg.msg-W{color:#a34d00} #msg.msg-S{color:var(--ok)} #msg.msg-I{color:var(--blue-d)}
+#msg.clic{cursor:pointer} #msg.clic span{text-decoration:underline dotted}
+#msg.pisca{animation:pisca .5s 2}
+@keyframes pisca{50%{background:#ffe3e3}}
+#sysinfo{color:var(--muted);white-space:nowrap;display:flex;gap:10px}
+#sysinfo b{color:var(--text);font-weight:normal}
+
+/* Grupos e campos */
+fieldset.grupo{border:1px solid var(--line);background:#fff;margin:0 0 12px;padding:6px 14px 10px;border-radius:2px;min-width:0}
+fieldset.grupo>legend{padding:0 5px;font-weight:bold;color:#32363a}
+.campo{display:flex;align-items:center;min-height:29px;gap:8px;flex-wrap:wrap}
+.campo>label,.campo>.rot{width:200px;flex:none;color:#32363a}
+.campo>label.obr::after{content:" *";color:var(--err)}
+.inpw{display:inline-flex;align-items:center;position:relative}
+input[data-k],select[data-k],.fixo{height:24px;border:1px solid var(--fb);background:#fff;padding:0 6px;font:13px var(--font);color:var(--text);border-radius:0}
+select[data-k]{padding:0 2px}
+input[data-k]:focus,select[data-k]:focus{outline:none;border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+input[readonly],input:disabled,select:disabled{background:#f2f2f2;border-color:#c9c9c9;color:#32363a}
+.fixo{display:inline-flex;align-items:center;background:#f2f2f2;border-color:#c9c9c9;min-width:60px}
+input.erro{border-color:var(--err)!important;background:#fff2f2!important}
+input[data-tipo=valor]{text-align:right}
+.f4btn{display:none;position:absolute;right:1px;top:1px;height:22px;width:22px;border:0;background:#fff;cursor:pointer;padding:0;align-items:center;justify-content:center}
+.temf4:focus-within .f4btn,.temf4:hover .f4btn{display:inline-flex}
+.desc{color:var(--muted)}
+.ate{margin:0 8px;color:var(--muted)}
+.radios{display:flex;flex-direction:column;gap:4px;padding:4px 0}
+.rd,.ck{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.colunas{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.colunas>*{flex:1;min-width:380px}
+.nota{color:var(--muted);font-size:12.5px;margin:6px 0 0}
+.cabobj{background:#fff;border:1px solid var(--line);padding:8px 12px;margin-bottom:12px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.cabobj span{color:var(--muted)}
+.alerta{border:1px solid #f0c38a;background:#fff8ec;padding:7px 12px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.alerta a{color:var(--blue-d);cursor:pointer;text-decoration:underline}
+
+/* Abas */
+.abas{display:flex;gap:2px;margin-bottom:-1px;position:relative;z-index:1;flex-wrap:wrap}
+.aba{padding:6px 14px;border:1px solid var(--line);border-bottom:0;background:#eaeef2;cursor:pointer;border-radius:3px 3px 0 0;user-select:none}
+.aba.ativa{background:#fff;color:var(--blue-d);font-weight:bold;padding-bottom:7px}
+.abacorpo{border:1px solid var(--line);background:#fff;padding:10px 14px;margin-bottom:12px}
+.abacorpo fieldset.grupo{margin-bottom:8px}
+
+/* Quadro de saldo */
+.saldo{background:#fff;border:1px solid var(--line);padding:8px 12px;min-width:260px;display:grid;grid-template-columns:auto auto;gap:4px 16px;align-content:start}
+.saldo div{display:contents}
+.saldo .r{text-align:right;font-variant-numeric:tabular-nums}
+.saldo .linha-sld{font-weight:bold}
+.lado{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.lado>fieldset{flex:1;min-width:430px}
+
+/* Listas (ALV) */
+.alv{background:#fff;border:1px solid var(--line);margin-bottom:12px}
+.alv-tb{display:flex;gap:2px;padding:3px 4px;border-bottom:1px solid var(--line);background:#fafafa;flex-wrap:wrap}
+.alv-tb button{display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 7px;border:1px solid transparent;background:transparent;cursor:pointer;color:var(--blue-d);font-size:12.5px;border-radius:3px}
+.alv-tb button:hover{background:#eef3f8;border-color:#c5d3e0}
+.alv-tb button.on{background:#dbe8f6;border-color:#a9c3de}
+.alv-wrap{overflow:auto;max-height:calc(100vh - 300px)}
+.alv-rod{padding:4px 8px;color:var(--muted);font-size:12px;border-top:1px solid var(--line2)}
+table.grid{border-collapse:collapse;min-width:100%;font-size:12.5px}
+table.grid th{background:var(--hdr);border:1px solid #d6d6d6;padding:5px 7px;text-align:left;font-weight:bold;white-space:nowrap;position:sticky;top:0;z-index:1;cursor:pointer;user-select:none}
+table.grid th.num,table.grid td.num{text-align:right}
+table.grid th.colsel{background:#d3e4f6}
+table.grid td{border:1px solid #ececec;padding:3px 7px;white-space:nowrap;background:#fff}
+table.grid td.num{font-variant-numeric:tabular-nums}
+table.grid tbody tr:hover td{background:var(--hover)}
+table.grid tbody tr.sel td{background:var(--sel)}
+table.grid tr.tot td{background:var(--tot)!important;font-weight:bold}
+table.grid tr.sub td{background:var(--sub)!important;font-weight:bold}
+table.grid td.lk{cursor:pointer;color:var(--blue-d)}
+table.grid td.lk:hover{text-decoration:underline}
+table.grid td.ic{text-align:center;width:28px}
+table.grid td svg,table.grid th svg{vertical-align:middle}
+
+/* Tabela de itens editável */
+table.edit td{padding:0;border:1px solid #d9d9d9}
+table.edit td.st{text-align:center;width:30px}
+table.edit td.dsc{padding:0 7px;color:var(--muted);min-width:170px}
+table.edit input,table.edit select{border:0;height:25px;padding:0 6px;font:13px var(--font);background:transparent;color:var(--text);border-radius:0}
+table.edit input:focus,table.edit select:focus{outline:2px solid var(--blue);outline-offset:-2px;background:#fff}
+table.edit .inpw{width:100%}
+table.edit tbody tr:hover td{background:#fff}
+.gradebts{display:flex;gap:6px;margin-top:8px}
+
+/* Botões */
+.btn{height:27px;padding:0 11px;border:1px solid #b8c7d6;background:#fff;color:var(--blue-d);font:13px var(--font);cursor:pointer;display:inline-flex;gap:6px;align-items:center;border-radius:3px}
+.btn:hover{background:#eef3f8}
+.btn.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.pri:hover{background:var(--blue-d)}
+
+/* Pop-ups */
+.pp-fundo{position:fixed;inset:0;background:rgba(20,30,40,.28);display:flex;align-items:center;justify-content:center;z-index:50}
+.pp{background:#fff;border:1px solid #8a9aab;box-shadow:0 8px 28px rgba(0,0,0,.3);max-height:86vh;max-width:94vw;display:flex;flex-direction:column}
+.pp-tit{background:var(--shell);color:#fff;padding:7px 10px 7px 12px;display:flex;justify-content:space-between;align-items:center;font-weight:bold}
+.pp-x{background:transparent;border:0;color:#fff;font-size:18px;cursor:pointer;line-height:1}
+.pp-corpo{padding:12px 14px;overflow:auto}
+.pp-corpo p{margin:0 0 8px}
+.pp-bts{display:flex;justify-content:flex-end;gap:6px;padding:8px 12px;border-top:1px solid var(--line2);background:#fafafa}
+.f4busca{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.f4busca input{height:25px;border:1px solid var(--fb);padding:0 6px;font:13px var(--font);width:260px}
+.f4lista{max-height:52vh;overflow:auto;border:1px solid var(--line)}
+.f4lista tr{cursor:pointer}
+.tec{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* Menu Easy Access */
+.home{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.arvore{background:#fff;border:1px solid var(--line);padding:8px 4px;min-width:470px;flex:1.2;user-select:none}
+.no{padding:3px 6px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.no:hover{background:var(--hover)}
+.no.sel{background:var(--sel)}
+.no .seta{width:12px;display:inline-block;color:var(--muted);font-size:11px}
+.no .tc{font-weight:bold;min-width:112px;display:inline-block}
+.boasvindas{background:#fff;border:1px solid var(--line);padding:16px 18px;flex:1;min-width:340px}
+.boasvindas h2{margin:0 0 6px;font-size:17px;font-weight:normal}
+.boasvindas ol{padding-left:20px;margin:8px 0}
+.boasvindas li{margin-bottom:5px}
+kbd{display:inline-block;border:1px solid #c5c5c5;border-bottom-width:2px;border-radius:3px;padding:0 5px;font:12px var(--mono);background:#fafafa}
+.atalhos{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin-top:6px}
+
+/* Lista estilo relatório clássico */
+.lista{font-family:var(--mono);font-size:12.5px;background:#fff;border:1px solid var(--line);padding:12px 16px;white-space:pre;overflow:auto;line-height:1.5}
+.relat{background:#fff;border:1px solid var(--line);padding:10px 14px;overflow:auto}
+.relat table{border-collapse:collapse;font-family:var(--mono);font-size:12.5px;min-width:760px}
+.relat td{padding:2px 10px;white-space:nowrap}
+.relat td.num{text-align:right}
+.relat tr.n1 td{font-weight:bold;padding-top:10px}
+.relat tr.n2 td{font-weight:bold;color:#2c4a68}
+.relat tr.sub td{background:var(--sub);font-weight:bold}
+.relat tr.tot td{background:var(--tot);font-weight:bold;border-top:1px solid #d8c56a}
+.relat tr.ok td{color:var(--ok);font-weight:bold}
+.relat tr.mau td{color:var(--err);font-weight:bold}
+.relat .cab{font-family:var(--mono);font-size:12.5px;margin-bottom:8px;color:#32363a;white-space:pre}
+
+/* Guia do aluno (camada do curso, fora do visual do sistema) */
+#guia{width:370px;flex:none;border-left:1px solid var(--tutor-line);background:var(--tutor-bg);overflow:auto;display:flex;flex-direction:column}
+#guia.fechada{display:none}
+.g-cab{background:var(--tutor);color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:2}
+.g-cab b{font-size:14px}
+.g-cab button{background:transparent;border:0;color:#fff;font-size:18px;cursor:pointer}
+.g-abas{display:flex;border-bottom:1px solid var(--tutor-line);background:#fff;position:sticky;top:41px;z-index:2}
+.g-abas div{flex:1;text-align:center;padding:8px;cursor:pointer;color:var(--muted);font-weight:bold;border-bottom:3px solid transparent}
+.g-abas div.ativa{color:var(--tutor);border-bottom-color:var(--tutor)}
+.g-corpo{padding:12px 14px 30px}
+.g-corpo h3{font-size:14px;margin:14px 0 6px;color:var(--tutor)}
+.g-corpo h3:first-child{margin-top:2px}
+.g-corpo p{margin:0 0 8px}
+.g-corpo ol,.g-corpo ul{margin:0 0 8px;padding-left:20px}
+.g-corpo li{margin-bottom:5px}
+.g-tc{display:inline-block;background:var(--tutor);color:#fff;font-weight:bold;padding:1px 8px;border-radius:10px;font-size:12px;margin-right:6px}
+.g-caixa{background:#fff;border:1px solid var(--tutor-line);border-radius:6px;padding:9px 11px;margin:8px 0}
+.g-rodape{margin-top:18px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--tutor-line);padding-top:8px}
+.g-prog{height:8px;background:#dcebe3;border-radius:4px;overflow:hidden;margin:4px 0 12px}
+.g-prog i{display:block;height:100%;background:var(--tutor)}
+.mis{background:#fff;border:1px solid var(--tutor-line);border-radius:6px;padding:9px 11px;margin-bottom:9px}
+.mis.feita{opacity:.72;background:#eef7f2}
+.mis-cab{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.mis-n{width:22px;height:22px;border-radius:50%;background:#dcebe3;color:var(--tutor);font-weight:bold;display:inline-flex;align-items:center;justify-content:center;font-size:12px;flex:none}
+.mis.feita .mis-n{background:var(--tutor);color:#fff}
+.mis p{margin:0 0 6px}
+.mis details{font-size:12.5px;color:#444}
+.mis summary{cursor:pointer;color:var(--tutor)}
+.mis-resp{display:flex;gap:6px;margin:6px 0}
+.mis-resp input{flex:1;height:26px;border:1px solid #9fb8aa;padding:0 6px;font:13px var(--font)}
+.mis-fb{font-size:12.5px;margin-top:4px}
+.mis-fb.nao{color:var(--err)}
+.lnk{background:transparent;border:0;color:var(--tutor);cursor:pointer;padding:0;font-weight:bold;text-decoration:underline;font-size:12.5px}
+.toast{position:fixed;right:24px;bottom:40px;background:var(--tutor);color:#fff;padding:12px 16px;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.25);z-index:70;max-width:340px;animation:sobe .3s}
+@keyframes sobe{from{transform:translateY(12px);opacity:0}}
