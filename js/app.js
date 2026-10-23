@@ -40,10 +40,10 @@ const MENU = [
   ] }
 ];
 
-/* ---------- tela inicial (Easy Access) ---------- */
+/* ---------- tela inicial ---------- */
 defTx('MENU', {
-  nome: 'Menu Easy Access',
-  titulo: 'Menu Easy Access',
+  nome: 'Menu inicial',
+  titulo: 'Menu inicial',
   render() {
     const feitas = MISSOES.filter(m => app.db.progresso.missoes[m.id]).length;
     return `<div class="home"><div class="arvore" id="arvore">${arvoreHTML(MENU, 0, '')}</div>
@@ -53,7 +53,8 @@ defTx('MENU', {
       <p><b>Atalhos de teclado</b></p>
       <div class="atalhos"><kbd>Enter</kbd><span>confirma a tela</span><kbd>F8</kbd><span>executa (relatórios e listas)</span><kbd>Ctrl+S</kbd><span>grava</span><kbd>F3</kbd><span>volta uma tela</span><kbd>Shift+F3</kbd><span>sai da transação</span><kbd>F4</kbd><span>lista de valores do campo</span><kbd>F1</kbd><span>explica o campo</span><kbd>Esc</kbd><span>cancela / fecha janela</span><kbd>Ctrl+/</kbd><span>vai para o campo de comando</span></div>
       <p style="margin-top:12px">Missões concluídas: <b>${feitas} de ${MISSOES.length}</b>. <button class="lnk" id="verMissoes">Ver a trilha de missões</button></p>
-      <p class="nota">Tudo o que você lança fica salvo neste navegador. Para recomeçar do zero: menu Sistema → Restaurar base de dados.</p></div></div>`;
+      <p class="nota">Tudo o que você lança fica salvo neste navegador. Para recomeçar do zero: menu Sistema → Restaurar base de dados.</p>
+      <p class="nota" style="border-top:1px solid var(--line2);padding-top:8px;margin-top:10px">Simulador educacional independente, sem vínculo com a SAP SE. SAP e S/4HANA são marcas registradas da SAP SE. Telas, dados e empresa são fictícios e simplificados para estudo.</p></div></div>`;
   },
   depois() {
     const arv = $('#arvore');
@@ -261,7 +262,7 @@ function menuSuspenso(el, itens) {
 }
 function fecharSuspenso() { const d = $('#dd'); if (d) d.remove(); $$('.mb-item.ativo').forEach(x => x.classList.remove('ativo')); }
 const MENUS_BARRA = {
-  menu: () => [['Menu Easy Access (/n)', () => abrirTx('MENU')], ['Lista de transações (F4)', () => abrirF4($('#cmd'))]],
+  menu: () => [['Menu inicial (/n)', () => abrirTx('MENU')], ['Lista de transações (F4)', () => abrirF4($('#cmd'))]],
   editar: () => [['Cancelar (Esc)', () => voltar()], ['Voltar (F3)', () => voltar()], ['Sair da transação (Shift+F3)', () => sairTx()]],
   favoritos: () => MENU[0].f.map(tc => [`${tc}  ${TX[tc].nome}`, () => abrirTx(tc)]),
   sistema: () => [['Status...', () => statusSistema()], null, ['Exportar base de dados (JSON)', () => baixarArquivo('simulador-fi-base.json', JSON.stringify(app.db, null, 1), 'application/json')], ['Restaurar base de dados', () => restaurarBase()]],
